@@ -121,14 +121,26 @@ export default defineNuxtConfig({
   },
 
   shadcn: {
-    /**
-     * Prefix for all the imported component
-     */
     prefix: '',
-    /**
-     * Directory that the component lives in.
-     * @default "./components/ui"
-     */
     componentDir: './app/components/ui',
+  },
+
+  // ✅ Fix: alias Node.js built-in modules for Cloudflare Pages compatibility
+  vite: {
+    resolve: {
+      alias: {
+        'node:buffer': 'buffer',
+        'node:process': 'process/browser',
+        'node:timers': 'timers-browserify',
+        'node:events': 'events/',
+        'node:async_hooks': false
+      }
+    },
+    define: {
+      'process.env': {},
+    },
+    optimizeDeps: {
+      include: ['buffer', 'process', 'timers-browserify', 'events'],
+    },
   },
 })
