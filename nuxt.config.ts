@@ -3,6 +3,7 @@ import { currentLocales } from './i18n/i18n'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  preset:'cloudflare',
   modules: [
     '@nuxthub/core',
     'shadcn-nuxt',
