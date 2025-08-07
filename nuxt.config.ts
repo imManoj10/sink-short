@@ -3,7 +3,7 @@ import { currentLocales } from './i18n/i18n'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  preset:'cloudflare',
+
   modules: [
     '@nuxthub/core',
     'shadcn-nuxt',
@@ -61,7 +61,7 @@ export default defineNuxtConfig({
   },
 
   experimental: {
-    enforceModuleCompatibility: true,
+    // Disable module compatibility enforcement as it might conflict with nodejs_compat
   },
 
   nitro: {
@@ -85,6 +85,13 @@ export default defineNuxtConfig({
         },
       },
     },
+    // Exclude build scripts and test files from the Worker bundle
+    exclude: [
+      'scripts/**',
+      'tests/**',
+      '**/*.test.*',
+      '**/*.spec.*',
+    ],
   },
 
   hub: {
@@ -95,6 +102,27 @@ export default defineNuxtConfig({
     database: false,
     kv: true,
     workers: provider !== 'cloudflare_pages',
+  },
+
+  // Cloudflare Workers with nodejs_compat enabled - configure for Node.js compatibility
+  vite: {
+    define: {
+      'process.env': {},
+    },
+    build: {
+      rollupOptions: {
+        external: [
+          // Exclude Node.js built-in modules from bundling since they're available in nodejs_compat
+          'node:fs',
+          'node:path',
+          'node:buffer',
+          'node:process',
+          'node:timers',
+          'node:events',
+          'node:async_hooks',
+        ],
+      },
+    },
   },
 
   eslint: {
@@ -120,28 +148,10 @@ export default defineNuxtConfig({
     baseUrl: '/',
     defaultLocale: 'en-US',
   },
+  preset: 'cloudflare',
 
   shadcn: {
     prefix: '',
     componentDir: './app/components/ui',
-  },
-
-  // ✅ Fix: alias Node.js built-in modules for Cloudflare Pages compatibility
-  vite: {
-    resolve: {
-      alias: {
-        'node:buffer': 'buffer',
-        'node:process': 'process/browser',
-        'node:timers': 'timers-browserify',
-        'node:events': 'events/',
-        'node:async_hooks': false
-      }
-    },
-    define: {
-      'process.env': {},
-    },
-    optimizeDeps: {
-      include: ['buffer', 'process', 'timers-browserify', 'events'],
-    },
   },
 })

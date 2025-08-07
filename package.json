@@ -8,10 +8,10 @@
     "node": ">=20.11"
   },
   "scripts": {
-    "build": "NODE_OPTIONS=--max-old-space-size=8192 nuxt build",
+    "build": "npm run build:map && npm run build:colo && nuxt build",
     "build:map": "node scripts/build-map.js",
     "build:colo": "node scripts/build-colo.js",
-    "postinstall": "npm run build:map && nuxt prepare",
+    "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint-staged": "lint-staged",
@@ -49,11 +49,7 @@
     "virtua": "^0.41.2",
     "vue-sonner": "^2.0.0",
     "vue3-simple-icons": "^13.2.0",
-    "zod": "^3.25.20",
-    "buffer": "^6.0.3",
-    "process": "^0.11.10",
-    "timers-browserify": "^2.0.12",
-    "events": "^3.3.0"
+    "zod": "^3.25.20"
   },
   "devDependencies": {
     "@anatine/zod-mock": "^3.14.0",
