@@ -49,7 +49,11 @@
     "virtua": "^0.41.2",
     "vue-sonner": "^2.0.0",
     "vue3-simple-icons": "^13.2.0",
-    "zod": "^3.25.20"
+    "zod": "^3.25.20",
+    "buffer": "^6.0.3",
+    "process": "^0.11.10",
+    "timers-browserify": "^2.0.12",
+    "events": "^3.3.0"
   },
   "devDependencies": {
     "@anatine/zod-mock": "^3.14.0",
